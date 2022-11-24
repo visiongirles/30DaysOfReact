@@ -32,7 +32,7 @@
                 <div className="circle"></div>
               </div>
 
-              <span className="title">Timeline</span>
+              <span className="title"> {this.props.title} </span>
 
               <input
                 type="text"
@@ -84,7 +84,7 @@
           return (
             <div className="notificationsFrame">
               <div className="panel">
-                <Header />
+                <Header title="Timeline" />
                 <Content />
               </div>
             </div>
