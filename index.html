@@ -5,7 +5,7 @@
     <title>Hello World</title>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/fullstackreact/30-days-of-react@master/day-04/public/Timeline.css"
+      href="https://cdn.jsdelivr.net/gh/fullstackreact/30-days-of-react@master/day-06/public/Clock.css"
       type="text/css"
     />
     <link
@@ -84,26 +84,26 @@
       const activities = [
         {
           timestamp: new Date().getTime(),
-          text: "Ate lunch",
+          text: 'Ate lunch',
           user: {
             id: 1,
-            name: "Nate",
-            avatar: "http://www.croop.cl/UI/twitter/images/doug.jpg",
+            name: 'Nate',
+            avatar: 'http://www.croop.cl/UI/twitter/images/doug.jpg',
           },
-          comments: [{ from: "Ari", text: "Me too!" }],
+          comments: [{ from: 'Ari', text: 'Me too!' }],
         },
         {
           timestamp: new Date().getTime(),
-          text: "Woke up early",
+          text: 'Woke up early',
           user: {
             id: 2,
-            name: "Ari",
+            name: 'Ari',
             avatar:
-              "https://external-preview.redd.it/vSTy5h7XhRveEimagGMtKcUYYl-5Cy8b6jz0w6u3WNw.jpg?auto=webp&s=f6a7c69e4999f9bc3635e7f165db503221ccc708",
+              'https://external-preview.redd.it/vSTy5h7XhRveEimagGMtKcUYYl-5Cy8b6jz0w6u3WNw.jpg?auto=webp&s=f6a7c69e4999f9bc3635e7f165db503221ccc708',
           },
           comments: [
-            { from: "Nate", text: "I am so jealous" },
-            { from: "Nate", text: "Like this" },
+            { from: 'Nate', text: 'I am so jealous' },
+            { from: 'Nate', text: 'Like this' },
           ],
         },
       ];
@@ -126,19 +126,42 @@
       }
 
       class Clock extends React.Component {
-        state = {};
-        render() {
-          const currentTime = new Date(),
-            hours = currentTime.getHours(),
-            minutes = currentTime.getMinutes(),
-            seconds = currentTime.getSeconds(),
-            ampm = hours >= 12 ? "pm" : "am";
+        constructor(props) {
+          super(props);
+          this.state = this.getTime();
+        }
 
+        componentDidMount() {
+          this.setTimer();
+        }
+
+        setTimer() {
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(this.updateClock.bind(this), 1000);
+        }
+
+        updateClock() {
+          this.setState(this.getTime, this.setTimer);
+        }
+
+        getTime() {
+          const currentTime = new Date();
+
+          return {
+            hours: currentTime.getHours(),
+            minutes: currentTime.getMinutes(),
+            seconds: currentTime.getSeconds(),
+            ampm: currentTime.getHours() >= 12 ? 'pm' : 'am',
+          };
+        }
+
+        render() {
+          const { hours, minutes, seconds, ampm } = this.state;
           return (
             <div className="clock">
               {hours == 0 ? 12 : hours > 12 ? hours - 12 : hours}:
-              {minutes > 9 ? minutes : "0${minutes}"}:
-              {seconds > 9 ? seconds : "0${minutes}"}
+              {minutes > 9 ? minutes : '0' + minutes}:
+              {seconds > 9 ? seconds : '0' + seconds}
               {ampm}
               {/* alternative padding the clock ("00" + minutes.slice(-2)) */}
             </div>
@@ -146,7 +169,7 @@
         }
       }
 
-      var mount = document.querySelector("#app");
+      var mount = document.querySelector('#app');
       ReactDOM.render(<Clock />, mount);
     </script>
   </body>
