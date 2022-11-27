@@ -54,22 +54,28 @@
             <div className="content">
               <div className="line"></div>
 
-              {activities.map((activity) => {
-                return (
-                  <div className="item">
-                    <div className="avatar">
-                      <img src={activity.user.avatar} alt={activity.text} />
-                      {activity.user.name}
-                    </div>
+              {activities.map((activity) => (
+                <ActivityItem activity={activity} />
+              ))}
+            </div>
+          );
+        }
+      }
 
-                    <span className="time">{activity.timestamp}</span>
-                    <p>{activity.text}</p>
-                    <div className="commentCount">
-                      {activity.comments.length}
-                    </div>
-                  </div>
-                );
-              })}
+      class ActivityItem extends React.Component {
+        render() {
+          const { activity } = this.props;
+
+          return (
+            <div className="item">
+              <div className="avatar">
+                <img src={activity.user.avatar} alt={activity.text} />
+                {activity.user.name}
+              </div>
+
+              <span className="time">{activity.timestamp}</span>
+              <p>{activity.text}</p>
+              <div className="commentCount">{activity.comments.length}</div>
             </div>
           );
         }
@@ -92,9 +98,13 @@
           user: {
             id: 2,
             name: "Ari",
-            avatar: "http://www.croop.cl/UI/twitter/images/doug.jpg",
+            avatar:
+              "https://external-preview.redd.it/vSTy5h7XhRveEimagGMtKcUYYl-5Cy8b6jz0w6u3WNw.jpg?auto=webp&s=f6a7c69e4999f9bc3635e7f165db503221ccc708",
           },
-          comments: [{ from: "Nate", text: "I am so jealous" }],
+          comments: [
+            { from: "Nate", text: "I am so jealous" },
+            { from: "Nate", text: "Like this" },
+          ],
         },
       ];
 
@@ -115,8 +125,29 @@
         }
       }
 
+      class Clock extends React.Component {
+        state = {};
+        render() {
+          const currentTime = new Date(),
+            hours = currentTime.getHours(),
+            minutes = currentTime.getMinutes(),
+            seconds = currentTime.getSeconds(),
+            ampm = hours >= 12 ? "pm" : "am";
+
+          return (
+            <div className="clock">
+              {hours == 0 ? 12 : hours > 12 ? hours - 12 : hours}:
+              {minutes > 9 ? minutes : "0${minutes}"}:
+              {seconds > 9 ? seconds : "0${minutes}"}
+              {ampm}
+              {/* alternative padding the clock ("00" + minutes.slice(-2)) */}
+            </div>
+          );
+        }
+      }
+
       var mount = document.querySelector("#app");
-      ReactDOM.render(<App />, mount);
+      ReactDOM.render(<Clock />, mount);
     </script>
   </body>
 </html>
