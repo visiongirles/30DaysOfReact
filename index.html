@@ -48,6 +48,8 @@
 
       class Content extends React.Component {
         render() {
+          const { activity } = this.props; //ES6 destructing
+
           return (
             <div className="content">
               <div className="line"></div>
@@ -85,6 +87,10 @@
             <div className="notificationsFrame">
               <div className="panel">
                 <Header title="Timeline" />
+                <Header title="Profile" />
+                <Header title="Settings" />
+                <Header title="Chat" />
+
                 <Content />
               </div>
             </div>
