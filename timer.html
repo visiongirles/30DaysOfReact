@@ -2,10 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World</title>
+    <title>Timer</title>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/fullstackreact/30-days-of-react@master/day-04/public/Timeline.css"
+      href="https://cdn.jsdelivr.net/gh/fullstackreact/30-days-of-react@master/day-06/public/Clock.css"
       type="text/css"
     />
     <link
@@ -47,18 +47,6 @@
       }
 
       class Content extends React.Component {
-        constructor(props) {
-          super(props);
-
-          this.state = {
-            activities: [],
-          };
-        }
-
-        componentWillMount() {
-          this.setState({ activities: data });
-        }
-
         render() {
           const { activities } = this.props; //ES6 destructing
 
@@ -137,8 +125,52 @@
         }
       }
 
+      class Clock extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = this.getTime();
+        }
+
+        componentDidMount() {
+          this.setTimer();
+        }
+
+        setTimer() {
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(this.updateClock.bind(this), 1000);
+        }
+
+        updateClock() {
+          this.setState(this.getTime, this.setTimer);
+        }
+
+        getTime() {
+          const currentTime = new Date();
+
+          return {
+            hours: currentTime.getHours(),
+            minutes: currentTime.getMinutes(),
+            seconds: currentTime.getSeconds(),
+            ampm: currentTime.getHours() >= 12 ? 'pm' : 'am',
+          };
+        }
+
+        render() {
+          const { hours, minutes, seconds, ampm } = this.state;
+          return (
+            <div className="clock">
+              {hours == 0 ? 12 : hours > 12 ? hours - 12 : hours}:
+              {minutes > 9 ? minutes : `0${minutes}`}:
+              {seconds > 9 ? seconds : `0${seconds}`}
+              {ampm}
+              {/* alternative padding the clock ("00" + minutes.slice(-2)) */}
+            </div>
+          );
+        }
+      }
+
       var mount = document.querySelector('#app');
-      ReactDOM.render(<App />, mount);
+      ReactDOM.render(<Clock />, mount);
     </script>
   </body>
 </html>
